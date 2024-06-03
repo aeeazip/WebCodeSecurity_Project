@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AsymmetricForm</title>
+</head>
+<body>
+    <form th:action="@{/key/asymmetric}" th:method="POST">
+        <p>공개키 파일명</p>
+        <input type="text" id="publicKeyFile" th:name="publicKeyFile" placeholder="ex. public.key" />
+        <p>개인키 파일명</p>
+        <input type="text" id="privateKeyFile" th:name="privateKeyFile" placeholder="ex. private.key" />
+        <input class="generateAsymmetric" type="submit" value="키 발급하기" />
+    </form>
+</body>
+</html>

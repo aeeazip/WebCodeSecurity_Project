@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SymmetricForm</title>
+</head>
+<body>
+  <form th:action="@{/key/symmetric}" th:method="POST">
+    <p>비밀키 파일명</p>
+    <input type="text" id="secretKeyFile" th:name="secretKeyFile" placeholder="ex. secret.key" />
+  </form>
+</body>
+</html>
