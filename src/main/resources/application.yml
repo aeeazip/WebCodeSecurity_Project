@@ -9,13 +9,8 @@ spring:
     driver-class-name: org.h2.Driver
     username: wcs
     password:
-  mvc:
-    view: # JSP views
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
   thymeleaf: # Thymeleaf views
     cache: false
-    view-names: *
   jpa:
     hibernate:
       ddl-auto: update
@@ -27,3 +22,6 @@ spring:
   devtools:
     livereload:
       enabled: true
+
+server:
+  port: 9000

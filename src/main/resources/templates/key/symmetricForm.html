@@ -1,3 +1,4 @@
+<!-- 대칭키 발급 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
@@ -6,8 +7,15 @@
 </head>
 <body>
   <form th:action="@{/key/symmetric}" th:method="POST">
-    <p>비밀키 파일명</p>
-    <input type="text" id="secretKeyFile" th:name="secretKeyFile" placeholder="ex. secret.key" />
+      <!-- 서버에서 전달한 에러 메시지 표시 -->
+      <div id="errorMessage" th:if="${errorMessage}" th:text="${errorMessage}" style="display: none;"></div>
+      <!-- 내용 -->
+      <p>비밀키 파일명</p>
+      <input type="text" id="secretKeyFile" th:name="secretKeyFile" placeholder="ex. secret.bin" />
+      <br/>
+      <input class="generateSymmetric" type="submit" value="비밀키 발급하기" />
   </form>
 </body>
+<!-- 외부 js -->
+<script th:src="@{/js/key/generate.js}"></script>
 </html>

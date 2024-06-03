@@ -1,3 +1,4 @@
+<!-- 비대칭키 발급 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
@@ -6,11 +7,17 @@
 </head>
 <body>
     <form th:action="@{/key/asymmetric}" th:method="POST">
+        <!-- 서버에서 전달한 에러 메시지 표시 -->
+        <div id="errorMessage" th:if="${errorMessage}" th:text="${errorMessage}" style="display: none;"></div>
+        <!-- 내용 -->
         <p>공개키 파일명</p>
         <input type="text" id="publicKeyFile" th:name="publicKeyFile" placeholder="ex. public.key" />
         <p>개인키 파일명</p>
         <input type="text" id="privateKeyFile" th:name="privateKeyFile" placeholder="ex. private.key" />
-        <input class="generateAsymmetric" type="submit" value="키 발급하기" />
+        <br/>
+        <input class="generateAsymmetric" type="submit" value="비대칭키 발급하기" />
     </form>
 </body>
+<!-- 외부 js -->
+<script th:src="@{/js/key/generate.js}"></script>
 </html>

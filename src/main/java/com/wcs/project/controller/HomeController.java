@@ -5,10 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/home")
 public class HomeController {
     // 메인 화면
-    @GetMapping("")
+    @GetMapping("/")
     public String home() {
         return "home";
     }
