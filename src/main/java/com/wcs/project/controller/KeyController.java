@@ -1,6 +1,7 @@
 package com.wcs.project.controller;
 
-import com.wcs.project.dto.key.KeyDto;
+import com.wcs.project.dto.key.AsymmetricDto;
+import com.wcs.project.dto.key.SymmetricDto;
 import com.wcs.project.service.KeyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.NoSuchAlgorithmException;
 
 /*
-    키 생성을 담당
+    키 발급을 담당
     - 비대칭키 : asymmetric (개인키 + 공개키)
     - 대칭키 : symmetric (비밀키)
 */
@@ -34,7 +35,7 @@ public class KeyController {
 
     // 전자서명에 필요한 비대칭키를 생성 (공개키 + 개인키)
     @PostMapping("/asymmetric")
-    public ModelAndView generateAsymmetricKey(@ModelAttribute @Validated KeyDto.AsymmetricRequest request,
+    public ModelAndView generateAsymmetricKey(@ModelAttribute @Validated AsymmetricDto request,
                                           BindingResult bindingResult) throws NoSuchAlgorithmException {
         if(bindingResult.hasErrors()) {
             return new ModelAndView("key/asymmetricForm", "errorMessage", "모든 필드값을 입력해주세요.");
@@ -54,7 +55,7 @@ public class KeyController {
 
     // 대칭암호화에 필요한 비밀키를 생성
     @PostMapping("/symmetric")
-    public ModelAndView generateSymmetricKey(@ModelAttribute @Validated KeyDto.SymmetricRequest request,
+    public ModelAndView generateSymmetricKey(@ModelAttribute @Validated SymmetricDto request,
                                              BindingResult bindingResult) throws NoSuchAlgorithmException {
         if(bindingResult.hasErrors()) {
             return new ModelAndView("key/symmetricForm", "errorMessage", "모든 필드값을 입력해주세요.");

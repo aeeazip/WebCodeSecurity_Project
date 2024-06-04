@@ -6,7 +6,12 @@
     <title>Home</title>
 </head>
 <body>
+    <!-- 서버에서 전달한 메시지 표시 -->
+    <div id="message" th:if="${message}" th:text="${message}" style="display: none;"></div>
+    <!-- 내용 -->
     <a th:href="@{/key/asymmetricForm}" class="asymmetric">비대칭키 발급</a>
     <a th:href="@{/key/symmetricForm}" class="symmetric">대칭키 발급</a>
 </body>
+<!-- 외부 js -->
+<script th:src="@{/js/home.js}"></script>
 </html>

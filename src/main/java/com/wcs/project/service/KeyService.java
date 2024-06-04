@@ -1,6 +1,7 @@
 package com.wcs.project.service;
 
-import com.wcs.project.dto.key.KeyDto;
+import com.wcs.project.dto.key.AsymmetricDto;
+import com.wcs.project.dto.key.SymmetricDto;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.KeyGenerator;
@@ -12,7 +13,7 @@ import java.security.*;
 @Service
 public class KeyService {
     // 비대칭키 생성 (공개키 + 개인키)
-    public boolean generateAsymmetricKey(KeyDto.AsymmetricRequest request) throws NoSuchAlgorithmException {
+    public boolean generateAsymmetricKey(AsymmetricDto request) throws NoSuchAlgorithmException {
         KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA"); // key 알고리즘 지정
         keyPairGen.initialize(1024); // keysize 지정
         KeyPair keyPair = keyPairGen.generateKeyPair(); // KeyPair 생성
@@ -42,7 +43,7 @@ public class KeyService {
     }
 
     // 대칭키 생성 (비밀키)
-    public boolean generateSymmetricKey(KeyDto.SymmetricRequest request) throws NoSuchAlgorithmException {
+    public boolean generateSymmetricKey(SymmetricDto request) throws NoSuchAlgorithmException {
         KeyGenerator keyGen = KeyGenerator.getInstance("DES");
         keyGen.init(56);  // key의 길이 지정
         Key secretKey = keyGen.generateKey();   // 비밀키 생성
