@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VerifyResult</title>
+    <script>
+        // 페이지가 로드될 때 실행
+        window.onload = function() {
+            alert("전자봉투 개봉에 성공했습니다.");
+        }
+    </script>
+</head>
+<body>
+    <p>파일명</p>
+    <p th:text="${response.dataFile}"></p>
+    <p>파일 내용</p>
+    <p th:text="${response.data}"></p>
+</body>
+</html>

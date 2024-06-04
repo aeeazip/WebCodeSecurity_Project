@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
     3. 철수의 대칭키(비밀키)를 영희의 공개키로 암호화
  */
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class SignDto {
     @NotEmpty(message = "원본 데이터 파일명을 입력해주세요.")
@@ -35,8 +34,8 @@ public class SignDto {
     private String secretKeyFile; // 대칭키(비밀키) 파일명
 
     @NotEmpty(message = "받는 사람의 공개키 파일명을 입력해주세요.")
-    private String senderPublicKeyFile; // 받는 사람의 공개키 파일명
+    private String receiverPublicKeyFile; // 받는 사람의 공개키 파일명
 
-    @NotEmpty(message = "보내고 싶은 파일명을 입력해주세요.")
-    private String sendFile; // 보낼 파일명
+    @NotEmpty(message = "전송할 파일명을 입력해주세요.")
+    private String sendFile; // 전송할 파일명
 }

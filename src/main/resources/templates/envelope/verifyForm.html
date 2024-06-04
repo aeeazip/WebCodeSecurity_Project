@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VerifyForm</title>
+</head>
+<body>
+    <form th:action="@{/digital/envelope/verify}" th:method="POST">
+        <!-- 서버에서 전달한 에러 메시지 표시 -->
+        <div id="errorMessage" th:if="${errorMessage}" th:text="${errorMessage}" style="display: none;"></div>
+        <!-- 내용 -->
+        <p>개봉할 파일명</p>
+        <input type="text" id="receiveFile" th:name="receiveFile" placeholder="ex. data.txt" />
+        <p>받는 사람의 개인키 파일명</p>
+        <input type="text" id="privateKeyFile" th:name="privateKeyFile" placeholder="ex. private.key" />
+        <p>보내는 사람의 비밀키 파일명</p>
+        <input type="text" id="senderSecretKeyFile" th:name="senderSecretKeyFile" placeholder="ex. secret.key" />
+        <input class="digitalEnvelope" type="submit" value="전자서명 개봉하기" />
+    </form>
+</body>
+<!-- 외부 js -->
+<script th:src="@{/js/envelope/envelope.js}"></script>
+</html>

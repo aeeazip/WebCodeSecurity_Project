@@ -20,11 +20,12 @@
         <p>보내는 사람의 비밀키 파일명</p>
         <input type="text" id="secretKeyFile" th:name="secretKeyFile" placeholder="ex. secret.key" />
         <p>받는 사람의 공개키 파일명</p>
-        <input type="text" id="senderPublicKeyFile" th:name="senderPublicKeyFile" placeholder="ex. public.key" />
+        <input type="text" id="receiverPublicKeyFile" th:name="receiverPublicKeyFile" placeholder="ex. public.key" />
         <p>전자서명 저장할 파일명</p>
         <input type="text" id="signedFile" th:name="signedFile" placeholder="ex. signed.txt" />
         <p>보내고 싶은 파일명</p>
         <input type="text" id="sendFile" th:name="sendFile" placeholder="ex. history.txt" />
+        <input class="digitalEnvelope" type="submit" value="전자서명 생성하기" />
     </form>
 </body>
 <!-- 외부 js -->
