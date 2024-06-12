@@ -16,12 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.NoSuchAlgorithmException;
 
-/*
-    키 발급을 담당
-    - 비대칭키 : asymmetric (개인키 + 공개키)
-    - 대칭키 : symmetric (비밀키)
-*/
-
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -38,9 +32,7 @@ public class KeyController {
     // 전자서명에 필요한 비대칭키를 생성 (공개키 + 개인키)
     @PostMapping("/asymmetric")
     public ModelAndView generateAsymmetricKey(@ModelAttribute @Validated AsymmetricDto request,
-                                          BindingResult bindingResult) throws NoSuchAlgorithmException {
-        log.info("비대칭키 생성하러 들어옴");
-        log.info("request : " + request.getPublicKeyFile());
+                                          BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return new ModelAndView("key/asymmetricForm", "errorMessage", "모든 필드값을 입력해주세요.");
         }
@@ -62,7 +54,7 @@ public class KeyController {
     // 대칭암호화에 필요한 비밀키를 생성
     @PostMapping("/symmetric")
     public ModelAndView generateSymmetricKey(@ModelAttribute @Validated SymmetricDto request,
-                                             BindingResult bindingResult) throws NoSuchAlgorithmException {
+                                             BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return new ModelAndView("key/symmetricForm", "errorMessage", "모든 필드값을 입력해주세요.");
         }

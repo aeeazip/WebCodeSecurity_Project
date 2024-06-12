@@ -4,6 +4,7 @@ import com.wcs.project.dto.data.DataSet;
 import com.wcs.project.dto.data.SendDataSet;
 import com.wcs.project.dto.envelope.SignDto;
 import com.wcs.project.dto.envelope.VerifyDto;
+import com.wcs.project.exception.SignException;
 import com.wcs.project.exception.VerifyException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,19 +13,17 @@ import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.security.*;
+import java.util.Arrays;
 
 @Service
 @Slf4j
 public class DigitalService {
-    /*
-         비대칭 암호화 : 공개키, 개인키(사설키)
-         대칭 암호화 : 대칭키(비밀키)
-     */
+    // 비대칭 암호화 : 공개키, 개인키(사설키) 사용 | 대칭 암호화 : 대칭키(비밀키) 사용
 
     // 전자봉투 생성
     public void digitalEnvelopeSign(SignDto request) {
         String dataFile = request.getDataFile(); // 데이터 파일명
-        String data = request.getData(); // 데이터 내용 (평문 준비)
+        char[] data = request.getData(); // 데이터 내용 (평문 준비)
         String sPrivateKeyFile = request.getPrivateKeyFile(); // 보내는 사람의 개인키 파일명
         String sPublicKeyFile = request.getPublicKeyFile(); // 보내는 사람의 공개키 파일명
         String sSecretKeyFile = request.getSecretKeyFile(); // 보내는 사람의 대칭키 파일명
@@ -33,7 +32,7 @@ public class DigitalService {
 
         try {
             // 1. 원문 파일 생성
-            byte[] readData = data.getBytes(); // 데이터 내용 byte형 배열로 변경
+            byte[] readData = new String(data).getBytes(); // 데이터 내용 byte형 배열로 변경
             try (FileOutputStream fos = new FileOutputStream(dataFile)) {
                 fos.write(readData);
             }
@@ -92,7 +91,6 @@ public class DigitalService {
                 oos.writeObject(dataSet);
                 dataSetByte = bos.toByteArray();
             } catch (IOException e) {
-                e.printStackTrace();
                 throw new RuntimeException(e);
             }
 
@@ -101,9 +99,9 @@ public class DigitalService {
                 - 암호화 결과를 파일로 저장하지 않고 byte[]로 반환받기 위해 사용
                 - 매개변수가 byte[] 타입이므로 Dataset을 byte[]로 변형
              */
-            Cipher cipher1 = Cipher.getInstance("DES");
+            Cipher cipher1 = Cipher.getInstance("AES");
             cipher1.init(Cipher.ENCRYPT_MODE, sSecretKey);
-            byte[] encryptedSet = cipher1.doFinal(dataSetByte);
+            byte[] encryptedSet = cipher1.doFinal(dataSetByte); // 대칭키로 암호화
 
             // 7. 받는 사람의 공개키 준비
             PublicKey rPublicKey;
@@ -132,13 +130,11 @@ public class DigitalService {
                 throw new RuntimeException(e);
             }
 
+            Arrays.fill(data, ' '); // 민감 데이터 지우기
             log.info("전자봉투 생성에 성공했습니다.");
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } catch (IOException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | IOException |
+                 NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
+            throw new SignException("전자봉투 생성에 실패했습니다.");
         }
     }
 
@@ -177,11 +173,11 @@ public class DigitalService {
                 - 복호화된 byte 배열을 사용하여 SecretKey 재생성
                 -> 보낸 사람의 비밀키 획득
              */
-            SecretKey sSecretKey = new SecretKeySpec(decryptedKeyBytes, "DES"); // 복호화된 byte 배열을 사용하여 SecretKey 재생성
+            SecretKey sSecretKey = new SecretKeySpec(decryptedKeyBytes, "AES"); // 복호화된 byte 배열을 사용하여 SecretKey 재생성
 
             // 3. 보낸 사람의 비밀키로 암호문 복호화
             byte[] encryptedSet = sendDataSet.getEncryptedSet(); // 암호문
-            Cipher cipher2 = Cipher.getInstance("DES");
+            Cipher cipher2 = Cipher.getInstance("AES");
             cipher2.init(Cipher.DECRYPT_MODE, sSecretKey);
             byte[] dataSetByte = cipher2.doFinal(encryptedSet);
 
@@ -222,21 +218,20 @@ public class DigitalService {
 
             // 8. 원문으로 생성한 해시 vs 복호화된 해시값 비교
             byte[] signature = dataSet.getSignature(); // 암호화된 해시값
-            boolean result = sig.verify(signature); // 원문과 새로운 해시값 비교
-
-            log.info("result : " + result);
+            boolean result = sig.verify(signature); // 원문으로 만든 해시값과 전자서명에서 꺼낸 해시값 비교
 
             if(result) {
                 log.info("전자봉투 개봉에 성공했습니다.");
-                return new VerifyDto.Response(dataFile, new String(readData));
+                String data = new String(readData);
+                data = data.replaceAll(", ", "");
+                return new VerifyDto.Response(dataFile, data);
             } else {
                 log.info("전자봉투 개봉에 실패했습니다.");
                 throw new VerifyException("전자봉투 개봉에 실패했습니다.");
             }
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
-            throw new RuntimeException(e);
-        } catch (IOException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
-            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException | IOException |
+                 NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException e) {
+            throw new VerifyException("전자봉투 개봉에 실패했습니다.");
         }
     }
 }

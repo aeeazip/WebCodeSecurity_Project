@@ -1,7 +1,6 @@
 package com.wcs.project.dto.data;
 
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +8,7 @@ import java.io.Serializable;
 
 @Getter
 @Builder
+@SuppressWarnings("serial")
 public class DataSet implements Serializable {
     @NotEmpty
     private String dataFile; // 원본 파일명

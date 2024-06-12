@@ -8,24 +8,31 @@
     <form th:action="@{/digital/envelope/sign}" th:method="POST">
         <!-- 서버에서 전달한 에러 메시지 표시 -->
         <div id="errorMessage" th:if="${errorMessage}" th:text="${errorMessage}" style="display: none;"></div>
-        <!-- 내용 -->
+        <!-- 원본 데이터 파일 -->
         <p>원본 데이터 파일명</p>
         <input type="text" id="dataFile" th:name="dataFile" placeholder="ex. data.txt" />
+        <!-- 데이터 내용 -->
         <p>데이터 내용</p>
         <input type="text" id="data" th:name="data" placeholder="ex. Patient's Medical History" />
-        <p>보내는 사람의 공개키 파일명</p>
+        <!-- 보내는 사람의 공개키 파일 -->
+        <p>병원의 공개키 파일명</p>
         <input type="text" id="publicKeyFile" th:name="publicKeyFile" placeholder="ex. public.key" />
-        <p>보내는 사람의 개인키 파일명</p>
+        <!-- 보내는 사람의 개인키 파일 -->
+        <p>병원의 개인키 파일명</p>
         <input type="text" id="privateKeyFile" th:name="privateKeyFile" placeholder="ex. private.key" />
-        <p>보내는 사람의 비밀키 파일명</p>
+        <!-- 보내는 사람의 비밀키 파일 -->
+        <p>병원의 비밀키 파일명</p>
         <input type="text" id="secretKeyFile" th:name="secretKeyFile" placeholder="ex. secret.key" />
-        <p>받는 사람의 공개키 파일명</p>
+        <!-- 받는 사람의 공개키 파일 -->
+        <p>환자의 공개키 파일명</p>
         <input type="text" id="receiverPublicKeyFile" th:name="receiverPublicKeyFile" placeholder="ex. public.key" />
+        <!-- 전자서명 저장할 파일 -->
         <p>전자서명 저장할 파일명</p>
         <input type="text" id="signedFile" th:name="signedFile" placeholder="ex. signed.txt" />
-        <p>보내고 싶은 파일명</p>
+        <!--  보내고 싶은 파일 -->
+        <p>환자에게 보여줄 파일명</p>
         <input type="text" id="sendFile" th:name="sendFile" placeholder="ex. history.txt" />
-        <input class="digitalEnvelope" type="submit" value="전자서명 생성하기" />
+        <input class="digitalEnvelope" type="submit" value="전자봉투 생성하기" />
     </form>
 </body>
 <!-- 외부 js -->

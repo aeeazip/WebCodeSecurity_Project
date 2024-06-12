@@ -5,13 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-/*
-    철수 -> 영희
-
-    1. 원문의 해시값을 철수의 개인키로 암호화
-    2. 철수의 공개키, 암호화된 해시값, 원문을 철수의 대칭키(비밀키)로 암호화
-    3. 철수의 대칭키(비밀키)를 영희의 공개키로 암호화
- */
 @Getter
 @AllArgsConstructor
 public class SignDto {
@@ -19,7 +12,7 @@ public class SignDto {
     private String dataFile; // 원본 데이터 파일명
 
     @NotEmpty(message = "데이터 내용을 입력해주세요.")
-    private String data; // 데이터 내용
+    private char[] data; // 데이터 내용
 
     @NotEmpty(message = "개인키 파일명을 입력해주세요.")
     private String privateKeyFile; // 데이터 내용 암호화에 사용할 개인키 파일명

@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 @Getter
 @Builder
+@SuppressWarnings("serial")
 public class SendDataSet implements Serializable {
     @NotEmpty
     private byte[] encryptedSet; // 암호문

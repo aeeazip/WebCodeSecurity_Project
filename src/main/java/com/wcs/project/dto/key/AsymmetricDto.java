@@ -8,7 +8,6 @@ import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
-//@Setter
 public class AsymmetricDto {
     @NotEmpty(message = "공개키 파일명을 입력해주세요.")
     private String publicKeyFile; // 공개키 파일 이름
